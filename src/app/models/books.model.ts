@@ -50,17 +50,17 @@ const booksSchema = new Schema<IBooks>({
 
 
 // A pre hook validation for update book
-booksSchema.pre("findOneAndUpdate", async function (next) {
-    const update = this.getUpdate() as Partial<IBooks>;
+// booksSchema.pre("findOneAndUpdate", async function (next) {
+//     const update = this.getUpdate() as Partial<IBooks>;
 
-    if (update.copies !== undefined && update.copies < 0) {
-        const err = new Error("Copies must be a positive number");
-        err.name = "ValidationError";
-        return next(err);
-    }
+//     if (update.copies !== undefined && update.copies < 0) {
+//         const err = new Error("Copies must be a positive number");
+//         err.name = "ValidationError";
+//         return next(err);
+//     }
 
-    next();
-});
+//     next();
+// });
 
 
 

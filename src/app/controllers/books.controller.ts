@@ -86,7 +86,7 @@ bookRoutes.patch("/:bookId", async (req: Request, res: Response) => {
         const id = new ObjectId(bookId)
         const updateDoc = req.body
         // console.log(updateDoc)
-        const book = await Books.findOneAndUpdate(id, updateDoc)
+        const book = await Books.findOneAndUpdate(id, updateDoc, { new: true, runValidators: true })
         if (!book) {
             return res.status(404).json({
                 success: false,
