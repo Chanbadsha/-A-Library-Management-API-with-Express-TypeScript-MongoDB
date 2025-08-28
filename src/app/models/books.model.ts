@@ -30,17 +30,21 @@ const booksSchema = new Schema<IBooks>({
     copies: {
         type: Number,
         required: true,
-        validate: {
-            validator: function (value) {
-                return value >= 0
-            },
-            message: props => `Book copies (${props.value}) cannot be a negative number`
-        }
+        min: [0, "Copies must be a positive number"]
+        // validate: {
+        //     validator: function (value) {
+        //         return value >= 0
+        //     },
+        //     message: props => `Copies must be a positive number`
+        // }
     },
     available: {
         type: Boolean,
         default: true
     }
+}, {
+    versionKey: false,
+    timestamps: true
 })
 
-const Books = model<IBooks>("Books", booksSchema)
+export const Books = model<IBooks>("Books", booksSchema)

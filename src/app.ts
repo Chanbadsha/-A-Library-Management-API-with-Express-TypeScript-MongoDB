@@ -1,9 +1,12 @@
 import express, { Request, Response } from 'express'
+import { bookRoutes } from './app/controllers/books.controller'
 const app = express()
 
 // Middleware
 app.use(express.json())
 
+// Route Middleware
+app.use('/books', bookRoutes)
 
 // Root api & Default api
 app.get("/", (req: Request, res: Response) => {
