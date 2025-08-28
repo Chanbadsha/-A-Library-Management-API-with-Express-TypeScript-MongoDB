@@ -78,14 +78,15 @@ bookRoutes.get("/:bookId", async (req: Request, res: Response) => {
         })
     }
 })
-// A api for get single book by id
+
+// A api for update single book by id
 
 bookRoutes.patch("/:bookId", async (req: Request, res: Response) => {
     try {
         const bookId = req?.params?.bookId
         const id = new ObjectId(bookId)
         const updateDoc = req.body
-        // console.log(updateDoc)
+
         const book = await Books.findOneAndUpdate(id, updateDoc, { new: true, runValidators: true })
         if (!book) {
             return res.status(404).json({
@@ -96,8 +97,40 @@ bookRoutes.patch("/:bookId", async (req: Request, res: Response) => {
 
         res.status(200).json({
             success: true,
-            message: "Book retrieved successfully",
+            message: "Book updated successfully",
             data: book,
+        });
+    } catch (error: any) {
+        res.status(401).json({
+            succeess: false,
+            message: error.message,
+            error
+        })
+    }
+})
+
+
+
+// A api for get single book by id
+
+bookRoutes.delete("/:bookId", async (req: Request, res: Response) => {
+    try {
+        const bookId = req?.params?.bookId
+        const id = new ObjectId(bookId)
+
+
+        const book = await Books.findOneAndDelete(id)
+        if (!book) {
+            return res.status(404).json({
+                success: false,
+                message: "Book not found",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Book deleted successfully",
+            data: null,
         });
     } catch (error: any) {
         res.status(401).json({
