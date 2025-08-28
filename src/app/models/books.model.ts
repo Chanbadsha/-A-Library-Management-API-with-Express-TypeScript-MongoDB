@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { model, Query, Schema } from "mongoose";
 import { IBooks } from "../interfaces/books.inteface";
 
 const booksSchema = new Schema<IBooks>({
@@ -46,5 +46,23 @@ const booksSchema = new Schema<IBooks>({
     versionKey: false,
     timestamps: true
 })
+
+
+
+// A pre hook validation for update book
+booksSchema.pre("findOneAndUpdate", async function (next) {
+    const update = this.getUpdate() as Partial<IBooks>;
+
+    if (update.copies !== undefined && update.copies < 0) {
+        const err = new Error("Copies must be a positive number");
+        err.name = "ValidationError";
+        return next(err);
+    }
+
+    next();
+});
+
+
+
 
 export const Books = model<IBooks>("Books", booksSchema)

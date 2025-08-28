@@ -1,6 +1,6 @@
 import express, { json, Request, Response } from 'express'
 import { Books } from '../models/books.model'
-
+import { ObjectId } from 'mongodb'
 export const bookRoutes = express.Router()
 
 
@@ -42,6 +42,63 @@ bookRoutes.get("/", async (req: Request, res: Response) => {
             "message": "Books retrieved successfully",
             "data": books
         })
+    } catch (error: any) {
+        res.status(401).json({
+            succeess: false,
+            message: error.message,
+            error
+        })
+    }
+})
+
+
+// A api for get single book by id
+
+bookRoutes.get("/:bookId", async (req: Request, res: Response) => {
+    try {
+        const bookId = req?.params?.bookId
+        const book = await Books.findById(bookId)
+        if (!book) {
+            return res.status(404).json({
+                success: false,
+                message: "Book not found",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Book retrieved successfully",
+            data: book,
+        });
+    } catch (error: any) {
+        res.status(401).json({
+            succeess: false,
+            message: error.message,
+            error
+        })
+    }
+})
+// A api for get single book by id
+
+bookRoutes.patch("/:bookId", async (req: Request, res: Response) => {
+    try {
+        const bookId = req?.params?.bookId
+        const id = new ObjectId(bookId)
+        const updateDoc = req.body
+        // console.log(updateDoc)
+        const book = await Books.findOneAndUpdate(id, updateDoc)
+        if (!book) {
+            return res.status(404).json({
+                success: false,
+                message: "Book not found",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Book retrieved successfully",
+            data: book,
+        });
     } catch (error: any) {
         res.status(401).json({
             succeess: false,
