@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 import { Borrow } from '../models/borrow.model'
-import app from '../../app'
+import { ObjectId } from 'mongodb'
+import { Books } from '../models/books.model'
 
 export const borrowRoutes = express.Router()
 
@@ -8,9 +9,16 @@ export const borrowRoutes = express.Router()
 
 borrowRoutes.post('/', async (req: Request, res: Response) => {
     try {
-        const borrowInfo = req.body
+        const { book, quantity, dueDate } = req.body
 
-        const borrow = await Borrow.create(borrowInfo)
+        const bookId = new ObjectId(book)
+
+        const isAvailable = await Books.hasEnoughCopies({ quantity, bookId });
+        if (!isAvailable) {
+            throw new Error("Not enough copies available to borrow");
+        }
+        const borrow = await Borrow.create({ book, quantity, dueDate })
+
         res.status(200).json({
             success: true,
             message: "Book borrowed successfully",
@@ -18,7 +26,7 @@ borrowRoutes.post('/', async (req: Request, res: Response) => {
         });
     } catch (error: any) {
         res.status(401).json({
-            succeess: false,
+            success: false,
             message: error.message,
             error
         })

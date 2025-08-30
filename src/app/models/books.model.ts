@@ -1,7 +1,7 @@
 import { model, Query, Schema } from "mongoose";
-import { IBooks } from "../interfaces/books.inteface";
+import { IBooks, IBooksCopiesCheck } from "../interfaces/books.inteface";
 
-const booksSchema = new Schema<IBooks>({
+const booksSchema = new Schema<IBooks, IBooksCopiesCheck>({
     title: {
         type: String,
         required: true,
@@ -63,6 +63,20 @@ const booksSchema = new Schema<IBooks>({
 // });
 
 
+//  A static method to check has enoguh copies
+
+booksSchema.static(
+    "hasEnoughCopies",
+    async function ({ quantity, bookId }: { quantity: number; bookId: string }) {
+        const book = await this.findById(bookId);
+        console.log(book)
+        if (!book) {
+            throw new Error("Book not found");
+        }
+        return book.copies >= quantity && book.available;
+    }
+);
 
 
-export const Books = model<IBooks>("Books", booksSchema)
+
+export const Books = model<IBooks, IBooksCopiesCheck>("Books", booksSchema)
