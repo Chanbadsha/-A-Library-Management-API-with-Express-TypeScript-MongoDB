@@ -182,10 +182,8 @@ npm install
 
 Create a .env file in the project root and add the following:
 
-MONGO_URI=<your-mongodb-connection-string>
-PORT=5000
-
-MONGO_URI — Your MongoDB connection string.
+DATABASE_USER= <your-mongodb-database-username>
+DATABASE_USER_PASSWORD=<your-mongodb-database-user-password>
 
 PORT — Port number for the server (default: 5000).
 
