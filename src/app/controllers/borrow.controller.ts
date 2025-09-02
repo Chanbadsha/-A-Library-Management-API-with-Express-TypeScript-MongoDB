@@ -19,13 +19,6 @@ borrowRoutes.post('/', async (req: Request, res: Response) => {
         }
 
 
-        const bookDoc = await Books.findById(bookId);
-        if (!bookDoc) throw new Error("Book not found");
-
-        bookDoc.copies -= quantity;
-        if (bookDoc.copies === 0) bookDoc.available = false;
-        await bookDoc.save();
-
         const borrow = await Borrow.create({ book, quantity, dueDate })
 
         res.status(200).json({
