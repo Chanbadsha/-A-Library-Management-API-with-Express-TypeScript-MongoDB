@@ -1,11 +1,11 @@
-import express, { json, Request, Response } from 'express'
+import express, { json, NextFunction, Request, Response } from 'express'
 import { Books } from '../models/books.model'
 import { ObjectId } from 'mongodb'
 export const bookRoutes = express.Router()
 
 
 // A api for create a books info
-bookRoutes.post("/", async (req: Request, res: Response) => {
+bookRoutes.post("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const booksInfo = req.body
         const book = await Books.create(booksInfo)
@@ -15,18 +15,14 @@ bookRoutes.post("/", async (req: Request, res: Response) => {
             "data": book
         })
     } catch (error: any) {
-        res.status(401).json({
-            succeess: false,
-            message: error.message,
-            error
-        })
+        next(error)
     }
 })
 
 
 // A api for get all books
 
-bookRoutes.get("/", async (req: Request, res: Response) => {
+bookRoutes.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { filter, genre, Genre, sortBy = "createdAt", sort, limit } = req.query
         const appliedGenre = filter || genre || Genre
@@ -43,18 +39,14 @@ bookRoutes.get("/", async (req: Request, res: Response) => {
             "data": books
         })
     } catch (error: any) {
-        res.status(401).json({
-            succeess: false,
-            message: error.message,
-            error
-        })
+        next(error)
     }
 })
 
 
 // A api for get single book by id
 
-bookRoutes.get("/:bookId", async (req: Request, res: Response) => {
+bookRoutes.get("/:bookId", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const bookId = req?.params?.bookId
         const book = await Books.findById(bookId)
@@ -71,17 +63,14 @@ bookRoutes.get("/:bookId", async (req: Request, res: Response) => {
             data: book,
         });
     } catch (error: any) {
-        res.status(401).json({
-            succeess: false,
-            message: error.message,
-            error
-        })
+
+        next(error)
     }
 })
 
 // A api for update single book by id
 
-bookRoutes.patch("/:bookId", async (req: Request, res: Response) => {
+bookRoutes.patch("/:bookId", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const bookId = req?.params?.bookId
         const id = new ObjectId(bookId)
@@ -101,19 +90,15 @@ bookRoutes.patch("/:bookId", async (req: Request, res: Response) => {
             data: book,
         });
     } catch (error: any) {
-        res.status(401).json({
-            succeess: false,
-            message: error.message,
-            error
-        })
+        next(error)
     }
 })
 
 
 
-// A api for get single book by id
+// A api for Delete single book by id
 
-bookRoutes.delete("/:bookId", async (req: Request, res: Response) => {
+bookRoutes.delete("/:bookId", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const bookId = req?.params?.bookId
         const id = new ObjectId(bookId)
@@ -133,10 +118,6 @@ bookRoutes.delete("/:bookId", async (req: Request, res: Response) => {
             data: null,
         });
     } catch (error: any) {
-        res.status(401).json({
-            succeess: false,
-            message: error.message,
-            error
-        })
+        next(error)
     }
 })

@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import { Borrow } from '../models/borrow.model'
 import { ObjectId } from 'mongodb'
 import { Books } from '../models/books.model'
@@ -7,7 +7,7 @@ export const borrowRoutes = express.Router()
 
 // Create a borrow history
 
-borrowRoutes.post('/', async (req: Request, res: Response) => {
+borrowRoutes.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { book, quantity, dueDate } = req.body
 
@@ -27,18 +27,14 @@ borrowRoutes.post('/', async (req: Request, res: Response) => {
             data: borrow,
         });
     } catch (error: any) {
-        res.status(401).json({
-            success: false,
-            message: error.message,
-            error
-        })
+        next(error)
     }
 })
 
 // Get all borrow histry
 
 
-borrowRoutes.get('/', async (req: Request, res: Response) => {
+borrowRoutes.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
 
         const borrow = await Borrow.aggregate([
@@ -83,10 +79,6 @@ borrowRoutes.get('/', async (req: Request, res: Response) => {
             data: borrow,
         });
     } catch (error: any) {
-        res.status(401).json({
-            succeess: false,
-            message: error.message,
-            error
-        })
+        next(error)
     }
 })
