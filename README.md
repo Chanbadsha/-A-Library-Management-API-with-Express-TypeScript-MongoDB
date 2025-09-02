@@ -156,3 +156,65 @@ This endpoint returns:
 
 - Total borrowed quantity per book (`totalQuantity`)
 - Book details (`title` and `isbn`)
+
+## ⚙ Installation & Setup
+
+Follow these steps to set up and run the **Library Management API** locally.
+
+### 1. Clone the Repository
+
+Clone the repository to your local machine:
+
+```bash
+git clone <https://github.com/Chanbadsha/-A-Library-Management-API-with-Express-TypeScript-MongoDB.git>
+cd library-management-api
+```
+
+### 2. Install Dependencies
+
+Make sure you have Node.js (v18+) installed. Then run:
+
+```bash
+npm install
+```
+
+### 3. Configure Environment Variables
+
+Create a .env file in the project root and add the following:
+
+MONGO_URI=<your-mongodb-connection-string>
+PORT=5000
+
+MONGO_URI — Your MongoDB connection string.
+
+PORT — Port number for the server (default: 5000).
+
+### 4. Run the Server
+
+Development Mode (with live reload using Nodemon):
+
+```bash
+npm run dev
+```
+
+Server should start and listen on the configured PORT:
+
+Server running on http://localhost:5000
+Connected to MongoDB
+
+---
+
+## ✅ Project Complete
+
+This Library Management API demonstrates a full-featured backend system using **Express, TypeScript, and MongoDB**.
+
+Key highlights:
+
+- Proper **schema validation** for books and borrows
+- **Business logic enforcement** for borrowing and availability
+- Use of **Mongoose static methods** and **middleware**
+- **Aggregation pipelines** for summary reports
+- Clear and consistent **error handling**
+
+Feel free to **fork this project**, experiment with it, and extend it further.  
+Happy coding! 🚀
