@@ -69,7 +69,7 @@ booksSchema.static(
     "hasEnoughCopies",
     async function ({ quantity, bookId }: { quantity: number; bookId: string }) {
         const book = await this.findById(bookId);
-        console.log(book)
+
         if (!book) {
             throw new Error("Book not found");
         }
