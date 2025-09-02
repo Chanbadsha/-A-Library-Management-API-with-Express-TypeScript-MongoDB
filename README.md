@@ -71,3 +71,18 @@ It allows managing books, borrowing books with proper business logic, and genera
   "available": true
 }
 ```
+
+### 2. Get All Books
+
+**GET** `/api/books`
+
+Retrieve a list of all books in the library. Supports **filtering, sorting, and limiting**.
+
+#### Query Parameters:
+
+| Parameter | Type   | Description                                             |
+| --------- | ------ | ------------------------------------------------------- |
+| `filter`  | string | Filter books by genre (e.g., FICTION, SCIENCE, FANTASY) |
+| `sortBy`  | string | Field to sort by (e.g., `createdAt`)                    |
+| `sort`    | string | Sort order: `asc` or `desc`                             |
+| `limit`   | number | Maximum number of results to return (default: 10)       |
